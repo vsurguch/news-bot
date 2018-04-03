@@ -106,4 +106,4 @@ ENV/
 # mypy
 .mypy_cache/
 
-token.py
+mytoken.py
