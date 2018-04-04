@@ -1,24 +1,33 @@
 import telebot
+from mytelebot_db import MyTeleBotDB
 from mytoken import TOKEN
 
 
 class MyTeleBot:
     def __init__(self):
         self.bot = telebot.TeleBot(TOKEN)
+        self.db = MyTeleBotDB()
         self.init_handlers()
 
     def init_handlers(self):
         ''' Инициализация обработчиков событий telegram '''
+
         @self.bot.message_handler(commands=['start', 'help'])
         def command_help(message):
             self.bot.send_message(message.chat.id, 'Нужна помощь?')
 
         @self.bot.message_handler(content_types=['text'])
         def handle_message(message):
-            self.bot.send_message(message.chat.id, 'Ответка')
+            self.bot.send_message(message.chat.id, self.format_news())
+
+    def format_news(self):
+        news = self.db.get_news()
+        return '\n'.join(
+            [n.get('published') + ': ' + n.get('title') for n in news])
 
     
     def run(self):
+        
         self.bot.polling(none_stop=True, interval=0)
 
 
