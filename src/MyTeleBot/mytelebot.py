@@ -1,4 +1,6 @@
 import telebot
+
+import constants
 from mytelebot_db import MyTeleBotDB
 from mytoken import TOKEN
 
@@ -14,16 +16,16 @@ class MyTeleBot:
 
         @self.bot.message_handler(commands=['start', 'help'])
         def command_help(message):
-            self.bot.send_message(message.chat.id, 'Нужна помощь?')
+            self.bot.send_message(message.chat.id, constants.GREET)
 
         @self.bot.message_handler(content_types=['text'])
         def handle_message(message):
-            self.bot.send_message(message.chat.id, self.format_news())
+            self.bot.send_message(message.chat.id, self.format_news(), parse_mode='HTML')
 
     def format_news(self):
         news = self.db.get_news()
-        return '\n'.join(
-            [n.get('published') + ': ' + n.get('title') for n in news])
+        return '\n\n'.join(
+            [constants.TEMPLATE.format(**n) for n in news])
 
     
     def run(self):

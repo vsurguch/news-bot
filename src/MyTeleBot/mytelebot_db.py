@@ -1,4 +1,5 @@
 import feedparser
+import time
 
 LENTA_FEED = 'http://lenta.ru/rss/news'
 
@@ -10,7 +11,12 @@ class MyTeleBotDB:
     def get_news(self, key=None):
         feed = feedparser.parse(LENTA_FEED)
         news = feed['entries'][:10]
+        for n in news:
+            n['published'] = self.format_time(n.get('published'))
         return news
+
+    def format_time(self, time_str):
+        return time_str[17:25]
 
 
 if __name__ == '__main__':
