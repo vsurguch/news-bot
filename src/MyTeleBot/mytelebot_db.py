@@ -1,6 +1,8 @@
 import pymongo
 
 
+DEBUG = False
+
 class MyTeleBotDB:
     '''
     класс для работы с БД.
@@ -85,28 +87,29 @@ class MyTeleBotDB:
 if __name__ == '__main__':
     # Примитивное тестирование
     # Надо определиться с библиотекой для тестов
-    db = MyTeleBotDB()
-    db.db.news.drop()
-    db.set_news(
-        {
-            'title': 'First news',
-            'published': 1234.55,
-            'link': 'https://bla.bla/novost_dnja',
-            'summary': 'lorem ipsum',
-            'base': 'https://bla.bla/rss',
-        }
-    )
-    try:
+    if DEBUG:
+        db = MyTeleBotDB()
+        db.db.news.drop()
         db.set_news(
             {
                 'title': 'First news',
                 'published': 1234.55,
+                'link': 'https://bla.bla/novost_dnja',
                 'summary': 'lorem ipsum',
                 'base': 'https://bla.bla/rss',
             }
         )
-    except TypeError as err:
-        print(err)
-    print(list(db.get_news()))
-    print(db.get_last_published('http://xyz.net')) # вернет 0.0
-    print(db.get_last_published('https://bla.bla/rss')) 
+        try:
+            db.set_news(
+                {
+                    'title': 'First news',
+                    'published': 1234.55,
+                    'summary': 'lorem ipsum',
+                    'base': 'https://bla.bla/rss',
+                }
+            )
+        except TypeError as err:
+            print(err)
+        print(list(db.get_news()))
+        print(db.get_last_published('http://xyz.net')) # вернет 0.0
+        print(db.get_last_published('https://bla.bla/rss')) 
