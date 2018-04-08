@@ -38,7 +38,7 @@ class MyTeleBotDB:
         news = self.db.news.find() \
                    .sort('published', pymongo.DESCENDING) \
                    .limit(count)
-        return news
+        return list(news)
 
     def set_news(self, news: dict):
         '''
