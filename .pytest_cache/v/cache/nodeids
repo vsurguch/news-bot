@@ -1,0 +1,11 @@
+[
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_set_news_err_dict",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_set_news_err_required_fields",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_set_news_err_published_float",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_get_news_empty",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_get_news_returned_type",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_set_news",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_get_news_return_sorted",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_get_last_published_for_empty",
+  "src/MyTeleBot/test/test_mytelebot_db.py::test_get_last_published"
+]
