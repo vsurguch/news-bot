@@ -107,3 +107,4 @@ ENV/
 .mypy_cache/
 
 mytoken.py
+.pytest_cache

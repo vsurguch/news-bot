@@ -24,6 +24,8 @@ class MyTeleBotDB:
         count - количество возвращаемых новостей
 
         Возвращает список из словарей, каждый словарь - отдельная новость.
+        Список отсортирован по времени публикации - от более новой новости
+        к более старой.
         Словарь имеет следующие поля:
         {
             'title':     -заголовок новости,
@@ -36,7 +38,7 @@ class MyTeleBotDB:
         news = self.db.news.find() \
                    .sort('published', pymongo.DESCENDING) \
                    .limit(count)
-        return news
+        return list(news)
 
     def set_news(self, news: dict):
         '''
