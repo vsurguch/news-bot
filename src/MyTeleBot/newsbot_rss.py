@@ -58,23 +58,17 @@ async def send_to_db(db, news_queue, rss_source):
             await asyncio.sleep(0)
         else:
             news = news_queue.get()
-            # db.set_news(news)
-            for k,v in news.items():
-                print(k, v)
+            db.set_news(news)
             await asyncio.sleep(0)
 
 # функция получающая rss-данные по Http и отравляющая их в очердеь feeds_queue
-async def get_data2(channel, feeds_queue, reader=None):
+async def get_data2(channel, feeds_queue):
     async with aiohttp.ClientSession() as session:
         async with async_timeout.timeout(5):
             try:
                 async with session.get(channel) as response:
-                    if reader == None:
-                        data = await response.read()
-                        feeds_queue.put(data)
-                        print('feed recieved:', channel, data)
-                    else:
-                        reader.send(await response.read())
+                    data = await response.read()
+                    feeds_queue.put(data)
             except TimeoutError as e:
                 print('Connection Timeout', e)
             except aiohttp.client_exceptions.ClientConnectorError as e:
