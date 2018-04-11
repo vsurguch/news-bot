@@ -5,6 +5,7 @@ import async_timeout
 import queue
 import feedparser
 import html2text
+import time
 from mytelebot_db import MyTeleBotDB
 
 RSS_CHANNELS = {
@@ -43,9 +44,10 @@ async def process(feed, entries, news_queue):
     if entries is not None:
         for entry in entries[-1:]:
             news = {}
+            published = time.mktime(entry.published_parsed)
             news['title'] = entry['title']
             news['link'] = entry['link']
-            news['published'] = entry['published']
+            news['published'] = published
             news['summary'] = html2text.html2text(entry['summary'])
             news['base'] = feed
             news_queue.put(news)
@@ -80,10 +82,14 @@ def main_cycle():
     feeds_queue = queue.Queue()
     rss_source = Rss_source(RSS_CHANNELS)
     db = MyTeleBotDB()
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     tasks = [asyncio.Task(get_data2(channel, feeds_queue)) for channel in rss_source.channels.values()]
     tasks.append(read_feed(feeds_queue, news_queue, rss_source))
     tasks.append(send_to_db(db, news_queue, rss_source))
-    loop = asyncio.get_event_loop()
+
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
 
